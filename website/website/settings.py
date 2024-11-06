@@ -29,7 +29,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", INSECURE_KEY)
 DEBUG = is_true(os.getenv("DJANGO_DEBUG", "true"))
 
 ALLOWED_HOSTS = split_with_comma(
-    os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost")
+    os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost","47.242.195.2")
 )
 
 INTERNAL_IPS = ["127.0.0.1"]
