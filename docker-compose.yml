@@ -44,19 +44,19 @@ services:
       - "traefik.http.routers.staticfiles.entrypoints=web"
       - "traefik.http.routers.staticfiles.priority=2"
 
-  reverse-proxy:
-    image: traefik:v2.9
-    restart: unless-stopped
-    command:
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+reverse-proxy:
+  image: traefik:v2.9
+  restart: unless-stopped
+  command:
+    - "--api.insecure=true"
+    - "--providers.docker=true"
+    - "--providers.docker.exposedbydefault=false"
+    - "--entrypoints.web.address=:8080"  # Change Traefik's port to 8080
+  ports:
+    - "8080:80"  # Map host's port 8080 to container's port 80
+    - "443:443"
+  volumes:
+    - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
 volumes:
   postgres-data:
