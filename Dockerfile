@@ -1,6 +1,6 @@
 FROM python:3.11-alpine as base
 
-FROM base as builder
+FROM base AS builder
 
 RUN apk update && apk --no-cache add python3-dev libpq-dev && mkdir /install
 WORKDIR /install
