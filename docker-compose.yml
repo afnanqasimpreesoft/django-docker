@@ -51,7 +51,7 @@ services:
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:8080"  # Use port 8080
+      - "--entrypoints.web.address=:8081"  # Use port 8080
     ports:
       - "8080:80"  # Map host's port 8080 to container's port 80
       - "443:443"
