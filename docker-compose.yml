@@ -1,4 +1,5 @@
 version: "3.9"
+
 services:
   postgres:
     image: postgres:15
@@ -19,27 +20,22 @@ services:
       - postgres
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.development.rule=Host(`127.0.0.1`) || Host(`localhost`)"
-      - "traefik.http.routers.development.entrypoints=web"
-      - "traefik.http.routers.development.priority=1"
+      - "traefik.http.routers.django.rule=Host(`47.242.195.2`)"
+      - "traefik.http.routers.django.entrypoints=web"
+      - "traefik.http.routers.django.priority=1"
 
   nginx:
     image: nginx:1.23-alpine
-    env_file: .env
     restart: unless-stopped
     volumes:
       - type: volume
         source: media-data
         target: /usr/share/nginx/html/media
         read_only: true
-        volume:
-          nocopy: true
       - type: volume
         source: staticfiles-data
         target: /usr/share/nginx/html/static
         read_only: true
-        volume:
-          nocopy: true
     depends_on:
       - django
     labels:
@@ -50,25 +46,16 @@ services:
 
   reverse-proxy:
     image: traefik:v2.9
-    env_file: .env
     restart: unless-stopped
     command:
-      #- "--log.level=DEBUG"
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
-      - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.le-resolver.acme.httpchallenge=true"
-      - "--certificatesresolvers.le-resolver.acme.httpchallenge.entrypoint=web"
-      - "--certificatesresolvers.le-resolver.acme.email=admin@yourdomain.com"
-      - "--certificatesresolvers.le-resolver.acme.storage=/letsencrypt/acme.json"
     ports:
       - "80:80"
       - "443:443"
-      #- "8080:8080"
     volumes:
-      - "./letsencrypt:/letsencrypt"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
 volumes:
